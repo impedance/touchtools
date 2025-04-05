@@ -1,0 +1,2 @@
+module ProductMetricsHelper
+end
