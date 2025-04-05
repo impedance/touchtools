@@ -1,0 +1,13 @@
+# config/locales/ru.yml
+ru:
+  providers:
+    lenta: "Лента"
+    magnit: "Магнит"
+    dixy: "Дикси"
+    perekrestok: "Перекресток"
+    unknown: "Неизвестный"
+  
+  statuses:
+    active: "Активен"
+    parsing: "Парсинг"
+    error: "Ошибка"
