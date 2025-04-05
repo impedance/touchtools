@@ -1,4 +1,68 @@
-<div>
-  <h1 class="font-bold text-4xl">ProductSources#index</h1>
-  <p>Find me in app/views/product_sources/index.html.erb</p>
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Мои отслеживаемые товары</h1>
+
+  <div class="bg-white rounded-lg shadow p-6 mb-8">
+    <%= form_with model: @product_source, 
+                  data: { turbo: false } do |f| %>
+      <div class="flex gap-4">
+        <%= f.url_field :url, 
+              placeholder: "Введите ссылку на товар (Лента, Магнит и др.)",
+              class: "flex-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500" %>
+        
+        <%= f.submit "Добавить", 
+              class: "bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors" %>
+      </div>
+
+      <% if @product_source.errors.any? %>
+        <div class="mt-4 text-red-600 text-sm">
+          <% @product_source.errors.full_messages.each do |msg| %>
+            <p><%= msg %></p>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @product_sources.any? %>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Магазин</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ссылка</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Добавлено</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @product_sources.each do |ps| %>
+            <tr>
+              <td class="px-6 py-4">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                  <%= provider_badge_color(ps.provider_type) %>">
+                  <%= t("providers.#{ps.provider_type}") %>
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <%= link_to ps.url, ps.url, 
+                      target: "_blank", 
+                      class: "text-blue-600 hover:underline truncate max-w-xs block" %>
+              </td>
+              <td class="px-6 py-4">
+                <%= status_badge(ps.status) %>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-500">
+                <%= l(ps.created_at, format: :short) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="text-center py-12 text-gray-500">
+      <p class="mb-4">Вы еще не добавили ни одного товара для отслеживания</p>
+      <p class="text-sm">Начните с вставки ссылки на товар в форму выше</p>
+    </div>
+  <% end %>
 </div>
