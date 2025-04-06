@@ -12,6 +12,9 @@ class ProductSource < ApplicationRecord
   before_validation :detect_provider
   after_create :schedule_initial_parsing
 
+  scope :by_provider, ->(provider) { provider.present? ? where(provider_type: provider) : all }
+  scope :search_by_name, ->(query) { where("LOWER(name) LIKE LOWER(?)", "%#{query}%") }
+
   private
 
   def detect_provider

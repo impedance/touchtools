@@ -1,0 +1,36 @@
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800"><%= @product.name %></h1>
+    <div class="mt-2 flex items-center space-x-4">
+      <span class="<%= provider_badge_color(@product.provider_type) %> px-3 py-1 rounded-full text-sm">
+        <%= t("providers.#{@product.provider_type}") %>
+      </span>
+      <%= link_to @product.url, target: "_blank", class: "text-blue-500 hover:text-blue-600 text-sm" do %>
+        ↗ Перейти к товару
+      <% end %>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+    <h2 class="text-xl font-semibold mb-4 text-gray-700">Динамика рейтинга</h2>
+    
+    <% if @metrics.any? %>
+      <%= line_chart @metrics.pluck(:collected_at, :rating),
+            library: {
+              title: 'Изменение рейтинга',
+              curve: false,
+              colors: ['#3b82f6'],
+              height: '400px'
+            } %>
+    <% else %>
+      <div class="text-center py-8 text-gray-400">
+        <p>Данные о рейтингах пока отсутствуют</p>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mt-6">
+    <%= link_to "← Вернуться к поиску", search_products_path, 
+          class: "text-gray-500 hover:text-gray-600 text-sm" %>
+  </div>
+</div>
