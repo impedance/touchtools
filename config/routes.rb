@@ -9,9 +9,10 @@ Rails.application.routes.draw do
 
   resources :products, only: [:show] do
     collection do
-      get 'search', action: :search
-      post 'search'
+      get 'search'
+      post 'find'
     end
   end
   get "up" => "rails/health#show", as: :rails_health_check
+
 end
