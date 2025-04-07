@@ -1,6 +1,7 @@
 class ProductsController < ApplicationController
   def search
     @providers = ProductSource.distinct.pluck(:provider_type)
+    @products = []
   end
 
   def show
@@ -17,11 +18,12 @@ class ProductsController < ApplicationController
                              .limit(50)
 
     if @products.empty?
-      redirect_to search_products_path, alert: 'Товары не найдены'
+      flash.now[:alert] = 'Товары не найдены'
+      render :search
     elsif @products.count == 1
       redirect_to product_path(@products.first)
     else
-      render :index
+      render 'products/index'
     end
   end
 end

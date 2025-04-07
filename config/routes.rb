@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :product_metrics, only: [:index]
   end
 
-  resources :products, only: [:show] do
+  resources :products do
     collection do
       get 'search'
       post 'find'
