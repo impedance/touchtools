@@ -28,6 +28,7 @@ class ProductSource < ApplicationRecord
         when 'lenta.com' then 'lenta'
         when 'magnit.ru' then 'magnit'
         when 'dostavka.dixy.ru' then 'dixy'
+        when 'megamarket.ru' then 'megamarket'
         when 'perekrestok.ru' then 'perekrestok'
         else 'unknown'
       end
@@ -41,7 +42,6 @@ class ProductSource < ApplicationRecord
   end
 
   def schedule_initial_parsing
-    # Будем использовать позже для запуска парсера
     update(status: :parsing)
   end
 end
