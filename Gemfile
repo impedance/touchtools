@@ -58,6 +58,8 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
   gem 'pry'
   gem 'byebug'
+  gem 'rspec-rails', '~> 5.1'
+  gem 'webmock'
 end
 
 group :development do
