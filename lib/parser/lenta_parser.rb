@@ -1,82 +1,80 @@
 require 'net/http'
 require 'json'
 require 'uri'
+require 'logger'
 
 class LentaParser
   def initialize
+    @logger = Logger.new(STDOUT)
+    @store_id = 1352
     @user_agent = "Mozilla/5.0 (Android 10; Mobile; rv:122.0) Gecko/122.0 Firefox/122.0"
   end
 
   def get_product_info(product_url)
     begin
+      @logger.info "Начало парсинга товара по URL: #{product_url}"
+
       # Извлекаем ID товара из URL
-      product_id = product_url.split('/product/')[1].split('-')[-1]
-      
+      product_id = product_url.split('/product/')[1].split('-').last
+
+      raise "Неверный формат URL: #{product_url}" unless product_id
+
+      @logger.info "Извлечённый ID товара: #{product_id}"
+
       # Формируем URL для API
-      api_url = "https://lenta.com/api/v2/stores/1352/skus/#{product_id}"
-      
+      api_url = "https://lenta.com/api/v2/stores/#{@store_id}/skus/#{product_id}"
+
       # Создаем URI объект
       uri = URI(api_url)
-      
+
       # Создаем HTTP запрос
       request = Net::HTTP::Get.new(uri)
-      request['User-Agent'] = "Mozilla/5.0 (Android 10; Mobile; rv:122.0) Gecko/122.0 Firefox/122.0"
-      
+      request['User-Agent'] = @user_agent
+
       # Выполняем запрос
       response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         http.request(request)
       end
-      
+
       # Проверяем успешность запроса
       response.value
-      
+
+      @logger.info "Успешный запрос к API: #{api_url}"
+
       # Парсим JSON ответ
       data = JSON.parse(response.body)
-      
-# Формируем результат
-result = {
-  название: data["title"],
-  рейтинг: data["rates"]["averageRate"],
-  всего_оценок: data["rates"]["totalCount"],
-  распределение_оценок: {
-    "1 звезда" => data["rates"]["scores"]["rate1"],
-    "2 звезды" => data["rates"]["scores"]["rate2"],
-    "3 звезды" => data["rates"]["scores"]["rate3"],
-    "4 звезды" => data["rates"]["scores"]["rate4"],
-    "5 звезд" => data["rates"]["scores"]["rate5"]
-  },
-  отзывы: data["comments"] ? data["comments"].map { |comment| comment["text"] } : [],
-  url: product_url
-}
 
+      @logger.debug "Полученные данные от API: #{data}"
 
-result
-      
+      # Извлекаем необходимые поля
+      title = data['title']
+      rating = data.dig('rates', 'averageRate') || 0
+      total_reviews = data.dig('rates', 'totalCount') || 0
+      review_distribution = {
+        '1 звезда' => data.dig('rates', 'scores', 'rate1') || 0,
+        '2 звезды' => data.dig('rates', 'scores', 'rate2') || 0,
+        '3 звезды' => data.dig('rates', 'scores', 'rate3') || 0,
+        '4 звезды' => data.dig('rates', 'scores', 'rate4') || 0,
+        '5 звезд' => data.dig('rates', 'scores', 'rate5') || 0
+      }
+      reviews = data['comments'] ? data['comments'].map { |comment| comment['text'] } : []
+
+      @logger.info "Парсинг завершён успешно: #{title}"
+
+      {
+        название: title,
+        рейтинг: rating,
+        всего_оценок: total_reviews,
+        распределение_оценок: review_distribution,
+        отзывы: reviews,
+        url: product_url
+      }
+
     rescue StandardError => e
-      puts "Ошибка при парсинге: #{e.message}"
+      @logger.error "Ошибка при парсинге URL #{product_url}: #{e.message}"
       {
         ошибка: e.message
       }
     end
   end
-end
-
-# Пример использования
-if __FILE__ == $0
-  parser = LentaParser.new
-  product_url = "https://lenta.com/product/shokoladnye-batonchiki-snickers-super-rossiya-80g-580825/"
-  result = parser.get_product_info(product_url)
-  
-  # Выводим результат в читаемом виде
-  puts "=== Информация о товаре ==="
-  puts "Название: #{result[:название]}"
-  puts "Рейтинг: #{result[:рейтинг]}"
-  puts "Всего оценок: #{result[:всего_оценок]}"
-  puts "\nРаспределение оценок:"
-  result[:распределение_оценок].each do |stars, count|
-    puts "#{stars}: #{count}"
-  end
-  puts "\nОтзывы:"
-  result[:отзывы].each { |review| puts review } if result[:отзывы]
-  puts "\nURL: #{result[:url]}"
 end
