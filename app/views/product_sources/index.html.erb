@@ -1,5 +1,6 @@
 <div class="max-w-4xl mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold mb-8">Мои отслеживаемые товары</h1>
+<%= link_to "Поиск товара", search_products_path, class: "text-blue-600 hover:underline ml-4" %>
 
   <div class="bg-white rounded-lg shadow p-6 mb-8">
     <%= form_with model: @product_source, 

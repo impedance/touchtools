@@ -1,4 +1,8 @@
 class ProductsController < ApplicationController
+  def index
+    @products = ProductSource.all
+  end
+
   def search
     @providers = ProductSource.distinct.pluck(:provider_type)
     @products = []
