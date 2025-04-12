@@ -8,60 +8,64 @@ class ProductSourcesController < ApplicationController
     @product_sources = current_user.product_sources.order(created_at: :desc)
   end
 
-  def create
-    begin
-      url = product_source_params[:url]
-      logger.info "Попытка обработать URL: #{url}"
+def create
+  url = product_source_params[:url]
+  logger.info "Попытка обработать URL: #{url}"
 
-      parser = get_parser(product_source_params[:url])
-      product_info = parser.get_product_info(ProductSource.new(url: product_source_params[:url]))
-      logger.info "Получена информация о продукте: #{product_info.inspect}"
-
-      parser_ok = product_info.is_a?(Hash) && product_info[:ошибка].nil?
+  begin
+    product_info = fetch_product_info(url)
+    parser_ok = product_info.is_a?(Hash) && product_info[:ошибка].nil?
 
     if parser_ok
-      @product_source = current_user.product_sources.new(
-        url: product_source_params[:url],
-        name: product_info[:название]
-      )
-
-      if @product_source.save
-        logger.info "Сохранена новая ссылка: #{@product_source.url}"
-        @product_source.product_metrics.create(
-          rating: product_info[:рейтинг],
-          reviews_count: product_info[:всего_оценок],
-          collected_at: Time.current
-        )
+      @product_source = create_product_source(url, product_info)
+      if @product_source.persisted?
+        create_product_metrics(@product_source, product_info)
         logger.info "Успешное сохранение метрик продукта для ссылки: #{@product_source.url}"
-        redirect_to product_sources_path,
-                    notice: 'Ссылка успешно добавлена! Данные успешно спаршены и сохранены.'
+        redirect_to product_sources_path, notice: 'Ссылка успешно добавлена! Данные успешно спаршены и сохранены.'
       else
         logger.error "Невозможно сохранить ссылку: #{@product_source.url}, ошибки: #{@product_source.errors.full_messages.join(', ')}"
-        redirect_to product_sources_path,
-                    alert: "Ссылка успешно добавлена, но не удалось сохранить: #{@product_source.errors.full_messages.join(', ')}"
+        redirect_to product_sources_path, alert: "Ссылка успешно добавлена, но не удалось сохранить: #{@product_source.errors.full_messages.join(', ')}"
       end
     else
-      error_message = product_info[:ошибка] || "Неизвестная ошибка при парсинге."
-      logger.error "Ошибка при парсинге ссылки: #{product_source_params[:url]}, ошибка: #{error_message}"
-      redirect_to product_sources_path,
-                  alert: "Произошла ошибка при парсинге: #{error_message}"
+      handle_error(product_info[:ошибка] || "Неизвестная ошибка при парсинге.")
     end
   rescue URI::InvalidURIError => e
-    error_message = "Некорректный URL: #{e.message}"
-    logger.error "Некорректный URL при парсинге ссылки: #{product_source_params[:url]}, ошибка: #{error_message}"
-    redirect_to product_sources_path,
-                alert: "Некорректный URL: #{error_message}"
+    handle_error("Некорректный URL: #{e.message}")
   rescue ArgumentError => e
-    error_message = "Неизвестный провайдер для URL: #{e.message}"
-    logger.error "Неизвестный провайдер при парсинге ссылки: #{product_source_params[:url]}, ошибка: #{error_message}"
-    redirect_to product_sources_path,
-                alert: "Неизвестный провайдер для URL: #{error_message}"
+    handle_error("Неизвестный провайдер для URL: #{e.message}")
   rescue StandardError => e
-    error_message = "Произошла внутренняя ошибка: #{e.message}"
-    logger.error "Внутренняя ошибка при парсинге ссылки: #{product_source_params[:url]}, ошибка: #{error_message}"
-    redirect_to product_sources_path,
-                alert: "Произошла внутренняя ошибка при парсинге: #{error_message}"
+    handle_error("Произошла внутренняя ошибка: #{e.message}")
   end
+end
+
+private
+
+def fetch_product_info(url)
+  parser = get_parser(url)
+  parser.get_product_info(ProductSource.new(url: url))
+end
+
+def create_product_source(url, product_info)
+  current_user.product_sources.new(
+    url: url,
+    name: product_info[:название]
+  ).tap do |product_source|
+    logger.info "Получена информация о продукте: #{product_info.inspect}"
+    product_source.save
+  end
+end
+
+def create_product_metrics(product_source, product_info)
+  product_source.product_metrics.create(
+    rating: product_info[:рейтинг],
+    reviews_count: product_info[:всего_оценок],
+    collected_at: Time.current
+  )
+end
+
+def handle_error(error_message)
+  logger.error "Ошибка при парсинге ссылки: #{product_source_params[:url]}, ошибка: #{error_message}"
+  redirect_to product_sources_path, alert: "Произошла ошибка при парсинге: #{error_message}"
 end
 
   private
