@@ -29,8 +29,8 @@
         <thead class="bg-gray-50">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Магазин</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ссылка</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
+<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Наименование</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Добавлено</th>
           </tr>
         </thead>
@@ -43,11 +43,9 @@
                   <%= t("providers.#{ps.provider_type}") %>
                 </span>
               </td>
-              <td class="px-6 py-4">
-                <%= link_to ps.url, ps.url, 
-                      target: "_blank", 
-                      class: "text-blue-600 hover:underline truncate max-w-xs block" %>
-              </td>
+<td class="px-6 py-4">
+  <%= link_to ps.name, product_path(ps), class: "text-blue-600 hover:underline" %>
+</td>
               <td class="px-6 py-4">
                 <%= status_badge(ps.status) %>
               </td>
