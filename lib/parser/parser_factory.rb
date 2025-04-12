@@ -1,14 +1,19 @@
 # lib/parser/parser_factory.rb
+require 'uri'
+
 module Parser
   class ParserFactory
-    def self.create(product_source)
-      case product_source.provider_type
-      when 'lenta'
+    def self.create(url)
+      uri = URI.parse(url)
+      host = uri.host
+
+      case host
+      when /lenta\.com$/
         LentaParser.new
-      when 'magnit'
+      when /magnit\.ru$/
         MagnitParser.new
       else
-        raise ArgumentError, "Unknown provider type: #{product_source.provider_type}"
+        raise ArgumentError, "Unknown provider for URL: #{url}"
       end
     end
   end
