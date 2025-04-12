@@ -34,13 +34,13 @@ RSpec.describe ProductSourcesController, type: :request do
     context 'with invalid URL' do
       let(:invalid_url) { 'lenta.ru/product/12345' }
 
-      it 'shows error message and does not create product source' do
-        expect {
-          post product_sources_path, params: { product_source: { url: invalid_url } }
-        }.not_to change(ProductSource, :count)
+it 'shows error message and does not create product source' do
+expect {
+  post product_sources_path, params: { product_source: { url: invalid_url } }
+}.not_to change(ProductSource, :count)
 
-        expect(flash[:alert]).to include('Неизвестный провайдер для URL')
-      end
+expect(flash[:alert]).to eq('Произошла ошибка при парсинге: Неизвестный провайдер для URL: Unknown provider for URL: lenta.ru/product/12345')
+end
     end
 
     context 'with unknown provider URL' do
@@ -67,7 +67,7 @@ RSpec.describe ProductSourcesController, type: :request do
           post product_sources_path, params: { product_source: { url: error_url } }
         }.not_to change(ProductSource, :count)
 
-        expect(flash[:alert]).to eq('Произошла внутренняя ошибка при парсинге: Произошла внутренняя ошибка: Исключение при парсинге')
+        expect(flash[:alert]).to eq('Произошла ошибка при парсинге: Произошла внутренняя ошибка: Исключение при парсинге')
       end
     end
   end
