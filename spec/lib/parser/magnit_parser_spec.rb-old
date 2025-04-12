@@ -1,0 +1,24 @@
+require 'rails_helper'
+require_relative '../../../lib/parser/magnit_parser'
+
+RSpec.describe MagnitParser do
+  let(:html_content) { File.read('spec/fixtures/magnit_sample.html') }
+  let(:parser) { MagnitParser.new(html_content) }
+
+  describe '#parse' do
+    it 'extracts product names' do
+      product_names = parser.parse.map { |product| product[:name] }
+      expect(product_names).to include('Product Name 1', 'Product Name 2')
+    end
+
+    it 'extracts product prices' do
+      product_prices = parser.parse.map { |product| product[:price] }
+      expect(product_prices).to include(100.0, 200.0)
+    end
+
+    it 'extracts product URLs' do
+      product_urls = parser.parse.map { |product| product[:url] }
+      expect(product_urls).to include('http://example.com/product1', 'http://example.com/product2')
+    end
+  end
+end
