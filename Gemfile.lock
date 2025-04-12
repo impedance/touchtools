@@ -120,6 +120,11 @@ GEM
     diff-lcs (1.6.1)
     drb (2.2.1)
     erubi (1.13.1)
+    factory_bot (6.5.1)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     groupdate (6.4.0)
@@ -313,6 +318,7 @@ DEPENDENCIES
   css-zero (~> 1.1)
   debug
   devise
+  factory_bot_rails
   groupdate
   importmap-rails
   jbuilder
