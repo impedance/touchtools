@@ -12,7 +12,7 @@ module Parser
     end
 
     def get_product_info(product_source)
-      product_url = product_source.url
+      product_url = product_source.is_a?(String) ? product_source : product_source.url
       begin
         @logger.info "Начало парсинга товара по URL: #{product_url}"
 
