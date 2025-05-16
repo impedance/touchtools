@@ -19,3 +19,7 @@
 
 ## Evolution of Project Decisions
 - The project is evolving towards a modular architecture where parsers can be easily added and updated.
+
+## Progress Log
+- Устранили ошибку несовместимости кодировок в `Parser::LentaParser`:
+  - Добавили `response.body.force_encoding('UTF-8')` для установки кодировки ответа в UTF-8

@@ -12,9 +12,11 @@
 - The application can display ratings as a chart.
 - The application can search for all created ProductSources by product name.
 - Fixed Lenta parser test issues:
-  - Changed test runner from `rails test` to `rspec`
-  - Updated class references to use full namespace `Parser::LentaParser`
-  - Corrected method calls from `parse` to `get_product_info`
+  - Смена тестового раннера с `rails test` на `rspec`.
+  - Обновление ссылок на классы для использования полного пространства имён `Parser::LentaParser`.
+  - Корректировка вызовов методов с `parse` на `get_product_info`.
+- Устранили ошибку несовместимости кодировок в `Parser::LentaParser`:
+  - Добавили `response.body.force_encoding('UTF-8')` для установки кодировки ответа в UTF-8
 
 ## Next Steps
 - Implement the pattern to use the application as a base and connect parsers as modules.
