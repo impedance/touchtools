@@ -2,16 +2,28 @@ require 'net/http'
 require 'json'
 require 'uri'
 require 'nokogiri'
+require 'logger'
 
 module Parser
   class MagnitParser
     def initialize
+      @logger = Logger.new(STDOUT)
+      @logger.level = Logger::WARN
       @user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    end
+
+    def run
+      product_url = ARGV.first || 'https://magnit.ru/product/1000233462-file_tsb_okhl_lotok_1_kg_v_lotok_ooo_soyuzptitseprom_5/'
+      product_source = OpenStruct.new(url: product_url)
+      result = parse(product_source)
+      puts result
     end
 
     def parse(product_source)
       product_url = product_source.url
       begin
+        @logger.info "Начало парсинга товара по URL: #{product_url}"
+
         # Создаем URI объект
         uri = URI(product_url)
         
@@ -29,6 +41,8 @@ module Parser
         # Проверяем успешность запроса
         response.value
         
+        @logger.info "Успешный запрос к URL: #{product_url}"
+
         # Парсим HTML
         doc = Nokogiri::HTML(response.body)
         
@@ -47,7 +61,7 @@ module Parser
         reviews_count = rating_info.split('·')[1].gsub(/[^\d]/, '')
         
         # Формируем результат
-        {
+        result = {
           # Основная информация
           название: doc.css('h1.product-card__title').text.strip,
           бренд: doc.css('.product-card__brand').text.strip,
@@ -79,12 +93,34 @@ module Parser
           изображения: doc.css('.product-card__gallery img').map { |img| img['src'] }
         }
         
+        formatted_output = format_output(result)
+        puts formatted_output
+        
       rescue StandardError => e
-        puts "Ошибка при парсинге: #{e.message}"
-        {
-          ошибка: e.message
-        }
+        @logger.error "Ошибка при парсинге URL #{product_url}: #{e.message}"
+        "Ошибка: #{e.message}"
       end
+    end
+
+    def format_output(data)
+      rating = data[:рейтинг] || 'нет'
+      total_reviews = data[:количество_оценок] || 'нет'
+      discount_price = data[:цена_со_скидкой]
+      regular_price = data[:обычная_цена]
+      price = discount_price ? "#{discount_price}р" : 'нет'
+      original_price = discount_price && regular_price ? "#{regular_price}р" : 'нет'
+      discount_percentage = discount_price && regular_price ? ((regular_price.to_f - discount_price.to_f) / regular_price.to_f * 100).round(2) : 'нет'
+      discount = discount_percentage != 'нет' ? "#{discount_percentage}%" : 'нет'
+      reviews_count = data[:количество_отзывов] || 'нет'
+
+      [
+        "Рейтинг общий: #{rating}",
+        "Количество оценок: #{total_reviews}",
+        "Скидка: #{discount}",
+        "Цена: #{price}",
+        "Цена без скидки: #{original_price}",
+        "Количество отзывов: #{reviews_count}"
+      ].join("\n")
     end
 
     private
@@ -99,4 +135,9 @@ module Parser
       characteristics
     end
   end
+end
+
+if __FILE__ == $0
+  parser = Parser::MagnitParser.new
+  parser.run
 end

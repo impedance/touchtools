@@ -13,7 +13,7 @@ module Parser
     end
 
     def run
-      product_url = ARGV.first || 'https://lenta.com/product/svinina-slovo-myasnika-lopatka-bk-ohl-rossiya-800g-472961/'
+      product_url = ARGV.first || 'https://lenta.com/product/shashlyk-lenta-fresh-sp-iz-svinogo-okoroka-v-kefire-polufabrikat-ohlazhdennyjj-068416/'
       result = get_product_info(product_url)
       puts result
     end
@@ -54,46 +54,63 @@ response.value
 response.body.force_encoding('UTF-8')
 
 # Выводим тело ответа в консоль для отладки
-puts "Тело ответа от API: #{response.body}"
+# puts "Тело ответа от API: #{response.body}"
 
 # Парсим JSON ответ
 data = JSON.parse(response.body)
 
-@logger.debug "Полученные данные от API: #{data}"
+      @logger.debug "Полученные данные от API: #{data}"
 
-# Выводим распарсенные данные в консоль для отладки
-puts "Распарсенные данные от API: #{data}"
+      # Выводим распарсенные данные в консоль для отладки
+      # puts "Распарсенные данные от API: #{data}"
 
-        # Извлекаем необходимые поля
-        title = data['title']
-        рейтинг = data.dig('rates', 'averageRate') || 0
-        всего_оценок = data.dig('rates', 'totalCount') || 0
-        распределение_оценок = {
-          '1 звезда' => data.dig('rates', 'scores', 'rate1') || 0,
-          '2 звезды' => data.dig('rates', 'scores', 'rate2') || 0,
-          '3 звезды' => data.dig('rates', 'scores', 'rate3') || 0,
-          '4 звезды' => data.dig('rates', 'scores', 'rate4') || 0,
-          '5 звезд' => data.dig('rates', 'scores', 'rate5') || 0
-        }
-        отзывы = data['comments'] ? data['comments'].map { |comment| comment['text'] } : []
+      # Добавляем логи для отладки цен
+      @logger.debug "regularPrice: #{data['regularPrice']}"
+      @logger.debug "discountPrice: #{data['discountPrice']}"
+
+      # Извлекаем необходимые поля
+      title = data['title']
+      рейтинг = data.dig('rates', 'averageRate') || 0
+      всего_оценок = data.dig('rates', 'totalCount') || 0
+      распределение_оценок = {
+        '1 звезда' => data.dig('rates', 'scores', 'rate1') || 0,
+        '2 звезды' => data.dig('rates', 'scores', 'rate2') || 0,
+        '3 звезды' => data.dig('rates', 'scores', 'rate3') || 0,
+        '4 звезды' => data.dig('rates', 'scores', 'rate4') || 0,
+        '5 звезд' => data.dig('rates', 'scores', 'rate5') || 0
+      }
+      отзывы = data['comments'] ? data['comments'].map { |comment| comment['text'] } : []
 
         @logger.info "Парсинг завершён успешно: #{title}"
 
-        {
-          название: title,
-          рейтинг: рейтинг,
-          всего_оценок: всего_оценок,
-          распределение_оценок: распределение_оценок,
-          отзывы: отзывы,
-          url: product_url
-        }
+        formatted_output = format_output(data)
+        puts formatted_output
 
       rescue StandardError => e
         @logger.error "Ошибка при парсинге URL #{product_url}: #{e.message}"
-        {
-          ошибка: e.message
-        }
+        "Ошибка: #{e.message}"
       end
+    end
+
+    def format_output(data)
+      rating = data.dig('rates', 'averageRate') || 'нет'
+      total_reviews = data.dig('rates', 'totalCount') || 'нет'
+discount_price = data['discountPrice']
+regular_price = data['regularPrice']
+      price = discount_price ? "#{discount_price}р" : 'нет'
+      original_price = discount_price && regular_price ? "#{regular_price}р" : 'нет'
+      discount_percentage = discount_price && regular_price ? ((regular_price.to_f - discount_price.to_f) / regular_price.to_f * 100).round(2) : 'нет'
+      discount = discount_percentage != 'нет' ? "#{discount_percentage}%" : 'нет'
+      reviews_count = data['comments'] ? data['comments'].size : 'нет'
+
+      [
+        "Рейтинг общий: #{rating}",
+        "Количество оценок: #{total_reviews}",
+        "Скидка: #{discount}",
+        "Цена: #{price}",
+        "Цена без скидки: #{original_price}",
+        "Количество отзывов: #{reviews_count}"
+      ].join("\n")
     end
 
 if __FILE__ == $0
