@@ -23,3 +23,43 @@
 ## Progress Log
 - Устранили ошибку несовместимости кодировок в `Parser::LentaParser`:
   - Добавили `response.body.force_encoding('UTF-8')` для установки кодировки ответа в UTF-8
+
+## All parsers
+- dixy
+- [x] magnit
+- [x] lenta
+- megamarket
+- ozon
+- vprok
+- perekrestok
+- yandex market
+- wildberries
+- flamb
+- drom
+- chinamobil
+- skidka-msk
+- metro
+- mvideo
+- eldorado
+- foodsprice
+- ratengoods
+- zoon
+- yell
+- rostov.flamp
+- yandex maps
+- banki
+- dreamjob
+- nerab
+- orabote
+- vseotzyvy.ru
+- otzovik
+- irecommend
+- 2gis
+- otzyvru
+- ru.OTZYV
+- utkonos
+- komus
+
+## Parser in progress
+dixy
+

@@ -90,36 +90,3 @@
 
         </div>
 ```
-
-dixy ✅
-megamarket ✅
-ozon ✅
-vprok ✅
-perekrestok ✅
-utkonos ❌
-yandex market ✅
-wildberries ✅
-flamb ✅
-drom ✅
-chinamobil ✅
-komus ❌
-skidka-msk ✅
-metro ✅
-mvideo ✅
-eldorado ✅
-foodsprice ✅
-ratengoods ✅
-zoon✅
-yell✅
-rostov.flamp✅
-yandex maps ✅
-banki ✅
-dreamjob ✅
-nerab✅
-orabote✅
-vseotzyvy.ru ✅
-otzovik✅
-irecommend✅
-2gis✅
-otzyvru✅
-ru.OTZYV❌
