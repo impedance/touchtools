@@ -8,9 +8,9 @@
 цена со скидкой
 
 
-### формат ответа от сервера сейчас такой:
+### содержимое html в котором необходимые данные
 
-
+```html
 <div class="card-info">
           <h1 class="detail-card__title open" data-id="214954">Сыр полутвердый Брест-Литовск Тильзитер 45% 200г</h1>
           <div class="card-info__head">
@@ -89,6 +89,7 @@
           
 
         </div>
+```
 
 dixy ✅
 megamarket ✅

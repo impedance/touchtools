@@ -63,7 +63,7 @@ module Parser
         # Формируем результат
         result = {
           # Основная информация
-          название: doc.css('h1.product-card__title').text.strip,
+          наименование: doc.css('div.unit-product-details__name-inner > span.pl-text[itemprop="name"]').text.strip,
           бренд: doc.css('.product-card__brand').text.strip,
           описание: doc.css('.product-card__description').text.strip,
 
@@ -102,6 +102,7 @@ module Parser
     end
 
     def format_output(data)
+      name = data[:наименование] || 'нет'
       rating = data[:рейтинг] || 'нет'
       total_reviews = data[:количество_оценок] || 'нет'
       discount_price = data[:цена_со_скидкой]
@@ -113,6 +114,7 @@ module Parser
       reviews_count = data[:количество_отзывов] || 'нет'
 
       [
+        "Наименование: #{name}",
         "Рейтинг общий: #{rating}",
         "Количество оценок: #{total_reviews}",
         "Скидка: #{discount}",
