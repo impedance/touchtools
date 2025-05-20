@@ -1,92 +1,56 @@
 
 ## Задача
-Парсер для dixy по аналогии с парсером magnit
-
-нужно написать парсер данных для магазина dixy, похожий парсер написан для магнита, нужно достать следующую информацию:
-Наименование товара,
-цена без скидки, 
-цена со скидкой
+Парсер для megamarket по аналогии с парсером dixy
 
 
-### содержимое html в котором необходимые данные
+в html элементе содержится
+наименование: Колбаски свино-говяжьи Самсон Grill Box Мини-ассорти охлажденные 400 г
+цена: 290 р
+рейтинг товара: 5.0
+количество отзывов: 3
+все эти данные нужно вывести так же как и в парсере dixy
+
+
+### содержимое html в котором есть необходимые данные
 
 ```html
-<div class="card-info">
-          <h1 class="detail-card__title open" data-id="214954">Сыр полутвердый Брест-Литовск Тильзитер 45% 200г</h1>
-          <div class="card-info__head">
-            <div class="card-info__head_holder">
-              <div class="logo-brand"><span class="logo-brand__title">Брест-Литовск</span></div>
-            </div>
-            <div class="card-info__head_actions">
-              <div class="share" onclick="copyUrl(this)">
-                <svg>
-                  <use xlink:href="/local/templates/dixy_ru/images/sprites.svg#share"></use>
-                </svg>
-              </div>
-              <div class="bookmark transit">
-                <svg>
-                  <use xlink:href="/local/templates/dixy_ru/images/sprites.svg#bookmark"></use>
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div class="main-info">
-            <div class="card-line detail" data-bsk_data="214954 1 1 шт 0" data-id="214954" data-template="detail-button">
-  <div class="card-line__price">
-    <div class="card-line__price_holder">
-      <div class="card__price in-time">
-        <div class="card__price-num">199.<span>90</span><span class="rub">руб.</span></div><span class="card__price-crossed">229.<span>90</span><span class="rub">руб.</span></span>
-      </div>
-      <div class="card__price-note">
-        <svg data-pop-content="" onclick="dataLayerShopDetail(this)">
-          <use xlink:href="/local/templates/dixy_ru/images/sprites.svg#info"></use>
-        </svg>
-        <p>Цена в конкретном магазине</p>
-        <div class="note-block top">                   
-                            
-                 <p class="text">Товарное предложение доступно в магазине по адресу:</p>
-                 
-                 <button class="btn tertiary-light" aria-label="Действие кнопки">Понятно</button>                 
-            </div>
-      </div>
-    </div>
-    <div class="main-info__cart desktop">
-          <button class="btn primary card-line__cartBnt" onclick="countpluse(this,'listingInitiator'); event.preventDefault();" type="button" aria-label="Кнопка Добавить в корзину"><span>В корзину</span></button>
-  </div>
-  </div>
-</div>
-              <div class="main-info__block"><span class="heading">Способ получения заказа:</span>
-                <div class="main-info__block_wrapper">
-                  <div class="main-info__block_holder">
-                    <svg class="icon">
-                      <use xlink:href="/local/templates/dixy_ru/images/sprites.svg#delivery"></use>
-                    </svg>
-                    <div class="main-info__block_content">
-                      <p>Доставка,&nbsp;<span>от 168 <span class="rub">руб.</span></span></p>
-                      <button class="main-info__block-btn" type="button" onclick="document.querySelector('.address').click(); dataLayerAddressChoice(this)" aria-label="Укажи адрес"><span>Укажи адрес</span>
-                        <svg>
-                          <use xlink:href="/local/templates/dixy_ru/images/sprites.svg#arrow_right"></use>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="main-info__block_holder">
-                    <svg class="icon">
-                      <use xlink:href="/local/templates/dixy_ru/images/sprites.svg#shop"></use>
-                    </svg>
-                    <div class="main-info__block_content">
-                      <p>Самовывоз из магазина:&nbsp;<span>Сегодня, бесплатно</span></p>
-                      <button class="main-info__block-btn" type="button" onclick="document.querySelector('.address').click(); dataLayerAddressChoice(this)" aria-label="Выбери магазин"><span>Выбери магазин</span>
-                        <svg>
-                          <use xlink:href="#arrow_right"></use>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-          
-
-        </div>
+<div class="pdp-header"><header class="pdp-header__header"><h1 itemprop="name" class="pdp-header__title pdp-header__title_only-title">
+			Колбаски свино-говяжьи Самсон Grill Box Мини-ассорти охлажденные 400 г
+		</h1> <div class="pdp-header__buttons"><div data-test="to-favorite-button" data-test-state="default" class="to-favorite-button pdp-header__favorite-button"><span class="to-favorite-button__icon pui-icon pui-icon_size_md pui-icon_decolored"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#15181A" fill-rule="evenodd" d="m11.93 5.822.07.066.07-.066C13.197 4.752 14.311 4 16.136 4 18.774 4 21 5.885 21 8.908c0 .931-.323 1.931-.853 2.944s-1.263 2.032-2.078 3c-1.629 1.936-3.573 3.657-4.83 4.696-.729.603-1.75.603-2.479 0-1.256-1.04-3.2-2.76-4.83-4.696-.814-.968-1.547-1.987-2.077-3S3 9.84 3 8.908C3 5.885 5.226 4 7.863 4c1.825 0 2.94.752 4.067 1.822Zm1.553 1.543L12 8.77l-1.483-1.406c-.464-.44-.856-.756-1.268-.96-.416-.205-.847-.296-1.386-.296-.802 0-1.501.262-2 .748-.5.486-.79 1.188-.79 2.05 0 .457.166 1.106.61 1.954.434.831 1.067 1.721 1.823 2.619 1.458 1.732 3.216 3.31 4.43 4.32l.064.055.065-.054c1.213-1.011 2.971-2.588 4.43-4.321.755-.898 1.387-1.788 1.822-2.619.444-.848.61-1.497.61-1.953 0-.863-.29-1.565-.79-2.051-.499-.486-1.198-.748-2-.748-.54 0-.97.09-1.386.296-.412.204-.804.52-1.268.96Z" clip-rule="evenodd"></path></svg></span> <div class="label"><span>В избранное</span></div></div> <!----></div></header></div> <!----> <div class="pdp-first-screen-regular"><!----> <div class="pdp-first-screen-regular__wrapper"><!----> <div class="pdp-first-screen-regular__wrapper"><div class="pdp-first-screen-regular__wrapper-regular"><div class="pdp-first-screen-regular__entry-points-and-flags"><div class="pdp-entry-points pdp-first-screen-regular__entry-points-wrapper"><div class="reviews-rating"><a href="/catalog/details/kolbaski-svino-govyazhi-samson-grill-box-mini-assorti-ohlazhdennye-400-g-100068539340_43320/#?details_block=reviews" class="reviews-rating__info"><div class="pui-rating-display pui-rating-display_size_md pui-rating-display_variant_primary pui-rating-display_box-type_narrow"><div class="pui-rating-display__rating"><div tabindex="0" class="pui-rating-display__item pui-rating-item pui-rating-item_variant_primary pui-rating-item_selected"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#000" fill-rule="evenodd" d="M9.993 4.374c.72-1.832 3.294-1.832 4.014 0l1.366 3.477 3.647.31c1.882.16 2.668 2.507 1.263 3.78l-2.857 2.591.858 3.806c.428 1.9-1.647 3.36-3.27 2.31L12 18.7l-3.014 1.948c-1.623 1.05-3.698-.41-3.27-2.31l.858-3.806-2.857-2.59C2.312 10.668 3.098 8.32 4.98 8.16l3.647-.31 1.366-3.477Z" clip-rule="evenodd"></path></svg></div><span class="pui-rating-display__narrow-text">5.0</span><!----></div><div class="pui-rating-display__text"><span class="pui-rating-display__text-bullet"> • </span>3 отзыва</div></div></a></div> <a href="/catalog/details/kolbaski-svino-govyazhi-samson-grill-box-mini-assorti-ohlazhdennye-400-g-100068539340_43320/#?details_block=questions" class="pdp-questions-entry-point"><span class="pdp-questions-entry-point__icon pui-icon pui-icon_size_md pui-icon_decolored"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#000" fill-rule="evenodd" d="M3 5.008C3 3.899 3.895 3 5 3h14c1.105 0 2 .899 2 2.008V15.55a2.004 2.004 0 0 1-2 2.008h-3.985l-2.12 2.98a1.097 1.097 0 0 1-1.79 0l-2.12-2.98H5c-1.105 0-2-.899-2-2.008V5.008Zm16 0H5V15.55h5.015L12 18.34l1.985-2.79H19V5.008Z" clip-rule="evenodd"></path></svg></span> <div class="pdp-questions-entry-point__text">Задать вопрос</div></a> <div class="pdp-to-compare-button pdp-to-compare-button_with-hover-button"><div class="pdp-to-compare-button__inner"><!----> <div class="pdp-to-compare-button__inner"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI5IiBjeT0iOSIgcj0iNiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjOEM5NTlDIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIxNSIgY3k9IjE1IiByPSI2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiM4Qzk1OUMiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==" alt="добавить в сравнение" class="pdp-to-compare-button__icon"> <img src="/static/dist/images/compare-hover.c33161.svg" alt="добавить в сравнение" class="pdp-to-compare-button__icon pdp-to-compare-button__icon_hover"> <div class="pdp-to-compare-button__text">Добавить для сравнения</div></div></div></div></div></div> <div class="pdp-first-screen-regular__gallery-and-attr"><div class="pdp-first-screen-regular_offset-top pdp-first-screen-regular__gallery-and-countdown pdp-first-screen-regular__pdp-gallery pdp-first-screen-regular__gallery-single-item"><!----> <div itemscope="itemscope" itemtype="http://schema.org/ImageObject" class="gallery-with-preview-and-badges"><div class="gallery-with-badges gallery-with-preview-and-badges__gallery-wrapper single-item"><!----> <div class="gallery regular-gallery pdp-video-player-container"><!----> <!----> <div class="base-gallery-slide base-gallery-slide_extra-large base-gallery-slide_show-full-size"><!----> <div class="inner-image-zoom base-gallery-slide__inner-image-zoom base-gallery-slide__inner-image-zoom_extra-large base-gallery-slide__inner-image-zoom_darkening"><img src="https://main-cdn.sbermegamarket.ru/big2/hlr-system/-12/360/826/535/231/255/100068539340b0.jpg" alt="Фотография Колбаски свино-говяжьи Самсон Grill Box Мини-ассорти охлажденные 400 г №1" itemprop="image" class="inner-image-zoom_image base-gallery-slide__inner-image-zoom-slide" style="transform-origin: 0% 0% 0px;"></div></div> <!----></div></div> <!----> <!----></div></div> <!----> <div class="pdp-regular-attrs"><!----> <!----> <!----> <ul class="pdp-regular-attrs__characteristics regular-characteristics"><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Стандарт: </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 гост 32951-2014
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Вид упаковки: </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 подложка
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Тип продукта: </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 колбаски
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Вид мяса: </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 говядина; свинина
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Энергетическая ценность (ккал на 100 г): </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 255
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Белки, в граммах (на 100 г): </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 14
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Жиры, в граммах (на 100 г): </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 23
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Углеводы, в граммах (на 100 г): </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 3
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Температура хранения: </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 от 0°С до +6°С
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Состав: </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 саксонские: свинина, вода, говядина, лук, соль, животный белок, специи и их экстракты (чеснок, петрушка, чабер, белый перец, кориандр, тимьян, зира, корица, черный перец, перец чили, кинза, красный перец, тмин, базилик, куркума), усилитель вкуса и аромата (глутамат натрия 1-замещенный), декстроза, антиокислители (лимонная кислота, аскорбиновая кислота, изоаскорбат натрия, аскорбат натрия), ароматизаторы, регуляторы кислотности (трифосфаты, цитраты натрия, ацетаты натрия), стабилизаторы (пирофосфаты, полифосфаты), сахар, свекольный порошок, концентрат на основе лимонного сока (сок лимона, консервант - сульфит натрия). мюнхенские: свинина, вода, лук, соль, специи (перец, имбирь, кориандр, мацис), петрушка, декстроза, усилитель вкуса и аромата (глутамат натрия 1-замещенный), экстракты специй (в т. ч. сельдерея), гидролизат растительного белка, стабилизатор (пирофосфаты), эмульгатор (моно- и диглицериды жирных кислот), антиокислители (аскорбиновая кислота, аскорбат натрия, изоаскорбат натрия), регуляторы кислотности (лимонная кислота, цитраты натрия), животный белок, ароматические экстракты (куркума, лимон), цедра апельсина, концентрат на основе лимонного сока (сок лимона, консервант - сульфит натрия)
+			</span> <span><!----> <!----></span></li><li itemprop="additionalProperty" itemtype="http://schema.org/PropertyValue" itemscope="itemscope"><span itemprop="name" class="regular-characteristics__attr-title"> Код товара: </span> <span itemprop="value" class="regular-characteristics__attr-description">
+				 100068539340
+			</span> <span><!----> <!----></span></li> <li class="regular-characteristics__all-attrs"><div class="regular-characteristics__spec-link-wrapper"><a href="/catalog/details/kolbaski-svino-govyazhi-samson-grill-box-mini-assorti-ohlazhdennye-400-g-100068539340_43320/#?details_block=spec" class=""><span>Все характеристики</span></a></div></li> <li><!----> <div class="ingredients pdp-regular-attrs__ingredients-block"><div class="ingredients__title">Состав</div> <div class="clamped-text"><div class="clamped-text__text clamped-text__text_line-clamp">
+		саксонские: свинина, вода, говядина, лук, соль, животный белок, специи и их экстракты (чеснок, петрушка, чабер, белый перец, кориандр, тимьян, зира, корица, черный перец, перец чили, кинза, красный перец, тмин, базилик, куркума), усилитель вкуса и аромата (глутамат натрия 1-замещенный), декстроза, антиокислители (лимонная кислота, аскорбиновая кислота, изоаскорбат натрия, аскорбат натрия), ароматизаторы, регуляторы кислотности (трифосфаты, цитраты натрия, ацетаты натрия), стабилизаторы (пирофосфаты, полифосфаты), сахар, свекольный порошок, концентрат на основе лимонного сока (сок лимона, консервант - сульфит натрия). мюнхенские: свинина, вода, лук, соль, специи (перец, имбирь, кориандр, мацис), петрушка, декстроза, усилитель вкуса и аромата (глутамат натрия 1-замещенный), экстракты специй (в т. ч. сельдерея), гидролизат растительного белка, стабилизатор (пирофосфаты), эмульгатор (моно- и диглицериды жирных кислот), антиокислители (аскорбиновая кислота, аскорбат натрия, изоаскорбат натрия), регуляторы кислотности (лимонная кислота, цитраты натрия), животный белок, ароматические экстракты (куркума, лимон), цедра апельсина, концентрат на основе лимонного сока (сок лимона, консервант - сульфит натрия)
+	</div> <button type="button" class="clamped-text__button btn-link xs">
+		Ещё
+	</button></div> <div class="popover-wrapper"><!----></div></div> <div class="pdp-nutritional-value-block pdp-regular-attrs__nutritional-value-block"><div class="pdp-nutritional-value-block__item pdp-nutritional-value-block__item_label"><div class="pdp-nutritional-value-block__value">Пищевая ценность на 100 гр</div> <div class="pdp-nutritional-value-block__title">Пищевая ценность на 100 г</div></div><div class="pdp-nutritional-value-block__item"><div class="pdp-nutritional-value-block__value">255</div> <div class="pdp-nutritional-value-block__title">ккал</div></div><div class="pdp-nutritional-value-block__item"><div class="pdp-nutritional-value-block__value">14</div> <div class="pdp-nutritional-value-block__title">белки</div></div><div class="pdp-nutritional-value-block__item"><div class="pdp-nutritional-value-block__value">23</div> <div class="pdp-nutritional-value-block__title">жиры</div></div><div class="pdp-nutritional-value-block__item"><div class="pdp-nutritional-value-block__value">3</div> <div class="pdp-nutritional-value-block__title">углеводы</div></div></div> <!----> <div class="categories regular-characteristics__categories-regular-wrapper"><!----> <!----> <a href="/catalog/myasnye-polufabrikaty/" class="categories__category-item" target="_blank"><div class="categories__icon-border"><img src="https://main-cdn.sbermegamarket.ru/mid10/hlr-system/195/537/342/571/311/5/2463684633849915t.jpg" alt="категория - Мясные полуфабрикаты" class="categories__icon"></div> <span class="categories__category-item_title">Мясные полуфабрикаты</span></a> <a href="/catalog/myasnye-polufabrikaty/brand-samson/" class="categories__category-item" target="_blank"><div class="categories__icon-border"><img src="/static/dist/images/brand-placeholder-icon.5f3a7c.svg" alt="бренд - Мясные полуфабрикаты Самсон" class="categories__icon"></div> <span class="categories__category-item_title">Мясные полуфабрикаты Самсон</span></a> <a href="/brands/samson/" class="categories__category-item" target="_blank"><div class="categories__icon-border"><img src="/static/dist/images/brand-placeholder-icon.5f3a7c.svg" alt="" class="categories__icon"></div> <span class="categories__category-item_title">Самсон</span></a></div> <!----></li></ul> <!----></div></div></div> <div class="offers-info pdp-first-screen-regular__offers-info"><div data-v-24ff7438="" class="sales-block-promocode sales-block-promocode-inactive"><div data-v-24ff7438="" class="sales-block-promocode__content"><!----> <span data-v-24ff7438="" class="sales-block-promocode__icon pui-icon pui-icon_size_xs pui-icon_decolored"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#000" fill-rule="evenodd" d="M8.293 5.293a1 1 0 0 1 1.414 0l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414-1.414L13.586 12 8.293 6.707a1 1 0 0 1 0-1.414Z" clip-rule="evenodd"></path></svg></span></div></div> <div class="pdp-sales-block offers-info__sales-block pdp-sales-block_active pdp-sales-block_express pdp-sales-block-cnd"><!----> <div class="sales-block-offer-price sales-block-offer-price_active"><div class="sales-block-offer-price__container-price"><span class="sales-block-offer-price__prefix"> от </span> <span itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer" class="sales-block-offer-price__price-final">
+	290 ₽
+	<meta itemprop="price" content="290"> <meta itemprop="priceCurrency" content="RUB"> <link itemprop="availability" href="http://schema.org/InStock" content="InStock"> <link itemprop="url" href="https://megamarket.ru/"></span> <div itemscope="itemscope" itemprop="offers" itemtype="http://schema.org/AggregateOffer"><meta itemprop="offerCount" content="2"> <meta itemprop="highPrice" content="317"> <meta itemprop="lowPrice" content="290"> <meta itemprop="priceCurrency" content="RUB"></div></div> <!----> <!----></div> <!----> <!----> <!----> <div class="pdp-cashback-table pdp-sales-block__cashback-table"><!----> <div class="pdp-cashback-table__not-highlighted-groups"><div class="pdp-cashback-table__row"><a href="https://www.sberbank.com/sberprime/?utm_source=pcard_web&amp;utm_medium=megamarket&amp;utm_campaign=1" target="_self" class="pdp-cashback-table__label pui-link-plain">
+				С подпиской СберПрайм
+				<span class="pui-icon pui-icon_size_xs pui-icon_decolored"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#000" fill-rule="evenodd" d="M8.293 5.293a1 1 0 0 1 1.414 0l6 6a1 1 0 0 1 0 1.414l-6 6a1 1 0 0 1-1.414-1.414L13.586 12 8.293 6.707a1 1 0 0 1 0-1.414Z" clip-rule="evenodd"></path></svg></span></a> <div class="money-bonus transparent money-bonus_loyalty money-bonus_with-plus pdp-cashback-table__money-bonus"><!----> <span data-test="bonus-amount" class="bonus-amount bonus-amount_without-percent">+12</span> <svg class="svg-icon bonus-icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#i-sber-spasibo"></use></svg></div></div></div></div> <div class="pdp-sales-block__bpg-wrapper"><!----> <!----></div> <div class="pdp-sales-block__button"><div class="catalog-buy-button catalog-buy-button_express catalog-buy-button_orientation-vertical catalog-buy-button_width-full"><button data-test="buy-button" data-test-offer="" type="button" class="catalog-buy-button__button btn lg"><!---->
+					Купить
+				</button></div></div> <div class="pdp-sales-block__delivery"><div class="delivery-info-item delivery-info-item_sales-block-item"><div class="delivery-info-item__delivery-type"><div class="delivery-info-item__wrap"><div class="sales-block-delivery-type delivery-info-item__delivery-table"><!----> <div class="sales-block-delivery-type__main-info"><div class="sales-block-delivery-type__title">
+			Доставка из магазина
+			<!----></div> <span class="sales-block-delivery-type__date">от 2 часов</span></div> <!----></div></div> <!----></div></div></div> <!----> <!----> <div class="pdp-merchant-rating-block pdp-sales-block__merchant-rating-block"><div class="pdp-merchant-rating-block__popover popover-wrapper"><!----></div> <div><div class="pdp-merchant-rating-block__merchant-name-with-rating"><span class="pdp-merchant-rating-block__merchant-name">Пятёрочка - Купер</span> <span class="pdp-merchant-rating-block__rating"><span>4.5</span> <span class="pdp-merchant-rating-block__rating-star pui-icon pui-icon_size_md pui-icon_decolored"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#000" fill-rule="evenodd" d="M9.993 4.374c.72-1.832 3.294-1.832 4.014 0l1.366 3.477 3.647.31c1.882.16 2.668 2.507 1.263 3.78l-2.857 2.591.858 3.806c.428 1.9-1.647 3.36-3.27 2.31L12 18.7l-3.014 1.948c-1.623 1.05-3.698-.41-3.27-2.31l.858-3.806-2.857-2.59C2.312 10.668 3.098 8.32 4.98 8.16l3.647-.31 1.366-3.477Z" clip-rule="evenodd"></path></svg></span></span></div></div></div></div> <a href="/catalog/details/kolbaski-svino-govyazhi-samson-grill-box-mini-assorti-ohlazhdennye-400-g-100068539340_43320/#?details_block=prices" class="more-offers-button offers-info__more-offers-button-wrapper">
+	Еще 1 предложение от 317 ₽
+</a> <!----> <!----> <!----> <!----></div></div> <!----></div></div>
 ```
