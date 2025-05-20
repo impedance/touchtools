@@ -52,14 +52,16 @@ module Parser
         # Парсим HTML
         doc = Nokogiri::HTML(response.body)
 
-        # Получаем название товара и цену
+        # Получаем название товара и цены
         name = doc.css('h1.detail-card__title').text.strip
-        price = doc.css('.card__price-num').first.text.strip
+        discounted_price = doc.css('.card__price-num').first.text.strip
+        regular_price = doc.css('.card__price-crossed').first.text.strip
 
         # Формируем результат
         result = {
           наименование: name,
-          цена: price
+          цена_со_скидкой: discounted_price,
+          цена_без_скидки: regular_price
         }
 
         formatted_output = format_output(result)
@@ -73,11 +75,13 @@ module Parser
 
     def format_output(data)
       name = data[:наименование] || 'нет'
-      price = data[:цена] || 'нет'
+      discounted_price = data[:цена_со_скидкой] || 'нет'
+      regular_price = data[:цена_без_скидки] || 'нет'
 
       [
         "Наименование: #{name}",
-        "Цена: #{price}"
+        "Цена со скидкой: #{discounted_price}",
+        "Цена без скидки: #{regular_price}"
       ].join("\n")
     end
   end
@@ -87,7 +91,7 @@ require_relative 'parser_factory'
 
 # Example usage:
 if __FILE__ == $0
-  url = "https://dixy.ru/catalog/molochnye-produkty-yaytsa/tvorog/2000190785/"
+  url = "https://dostavka.dixy.ru/catalog/myaso-ptitsa/svinina/318259/"
   result = Parser::ParserFactory.create(url)
   puts "#{result}"
 end

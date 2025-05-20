@@ -3,11 +3,11 @@
 
 
 ```html
-<div class="card-info">
-          <h1 class="detail-card__title" data-id="211165">Масса творожная РостАгроЭкспорт Особая с изюмом 180г</h1>
+
+          <h1 class="detail-card__title" data-id="209588">Ребра свиные Слово мясника с корейки охлажденные</h1>
           <div class="card-info__head">
             <div class="card-info__head_holder">
-              <div class="logo-brand"><span class="logo-brand__title">РостАгроЭкспорт</span></div>
+              <div class="logo-brand"><span class="logo-brand__title">Слово мясника</span></div>
             </div>
             <div class="card-info__head_actions">
               <div class="share" onclick="copyUrl(this)">
@@ -23,11 +23,11 @@
             </div>
           </div>
           <div class="main-info">
-            <div class="card-line detail" data-bsk_data="211165 1 1 шт 0" data-id="211165" data-template="detail-button">
+            <div class="card-line detail" data-bsk_data="209588 1 1 кг 0" data-id="209588" data-template="detail-button">
   <div class="card-line__price">
     <div class="card-line__price_holder">
-      <div class="card__price">
-        <div class="card__price-num">109.<span>90</span><span class="rub">руб.</span></div>
+      <div class="card__price in-time">
+        <div class="card__price-num">449.<span>90</span><span class="rub">руб.</span></div><span class="card__price-crossed">539.<span>90</span><span class="rub">руб.</span></span>
       </div>
       <div class="card__price-note">
         <svg data-pop-content="" onclick="dataLayerShopDetail(this)">
@@ -80,5 +80,5 @@
           </div>
           
 
-        </div>
+
 ```
