@@ -82,3 +82,5 @@ group :test do
 end
 
 gem "css-zero", "~> 1.1"
+
+gem "nokogiri", "~> 1.17"

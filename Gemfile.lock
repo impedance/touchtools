@@ -323,6 +323,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   mocha
+  nokogiri (~> 1.17)
   pry
   puma (>= 5.0)
   rails (~> 7.1.5, >= 7.1.5.1)

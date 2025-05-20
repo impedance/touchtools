@@ -2,6 +2,8 @@
 
 *   Created `MegamarketParser` to extract product information from Megamarket.
 *   Updated `ParserFactory` to include `MegamarketParser`.
+*   Created `OzonParser` to extract product information from Ozon.
+*   Updated `ParserFactory` to include `OzonParser`.
 *   Encountered bot detection on Megamarket.
 *   Modified `MegamarketParser` to return empty strings to avoid errors.
 
