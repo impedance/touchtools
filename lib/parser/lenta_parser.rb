@@ -12,8 +12,7 @@ module Parser
       @user_agent = "Mozilla/5.0 (Android 10; Mobile; rv:122.0) Gecko/122.0 Firefox/122.0"
     end
 
-    def run
-      product_url = ARGV.first || 'https://lenta.com/product/shashlyk-lenta-fresh-sp-iz-svinogo-okoroka-v-kefire-polufabrikat-ohlazhdennyjj-068416/'
+    def run(product_url)
       result = get_product_info(product_url)
       puts result
     end
@@ -114,8 +113,9 @@ regular_price = data['regularPrice']
     end
 
 if __FILE__ == $0
+  product_url = 'https://lenta.com/product/shashlyk-lenta-fresh-sp-iz-svinogo-okoroka-v-kefire-polufabrikat-ohlazhdennyjj-068416/'
   parser = Parser::LentaParser.new
-  parser.run
+  parser.run(product_url)
 end
   end
 end

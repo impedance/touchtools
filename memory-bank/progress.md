@@ -25,7 +25,7 @@
   - Добавили `response.body.force_encoding('UTF-8')` для установки кодировки ответа в UTF-8
 
 ## All parsers
-- dixy
+- [x] dixy
 - [x] magnit
 - [x] lenta
 - megamarket
@@ -61,5 +61,3 @@
 - komus
 
 ## Parser in progress
-dixy
-

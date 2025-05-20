@@ -1,5 +1,6 @@
 # lib/parser/parser_factory.rb
 require 'uri'
+require_relative 'dixy_parser'
 
 module Parser
   class ParserFactory
@@ -9,9 +10,14 @@ module Parser
 
       case host
       when /lenta\.com$/
-        LentaParser.new
+        parser = LentaParser.new
+        parser.run(url)
       when /magnit\.ru$/
-        MagnitParser.new
+        parser = MagnitParser.new
+        parser.run(url)
+      when /dixy\.ru$/
+        parser = DixyParser.new
+        return parser.run(url)
       else
         raise ArgumentError, "Unknown provider for URL: #{url}"
       end

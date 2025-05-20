@@ -12,8 +12,7 @@ module Parser
       @user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     end
 
-    def run
-      product_url = ARGV.first || 'https://magnit.ru/product/1000233462-file_tsb_okhl_lotok_1_kg_v_lotok_ooo_soyuzptitseprom_5/'
+    def run(product_url)
       product_source = OpenStruct.new(url: product_url)
       result = parse(product_source)
       puts result
@@ -139,6 +138,7 @@ module Parser
 end
 
 if __FILE__ == $0
+  product_url = 'https://magnit.ru/product/1000233462-file_tsb_okhl_lotok_1_kg_v_lotok_ooo_soyuzptitseprom_5/'
   parser = Parser::MagnitParser.new
-  parser.run
+  parser.run(product_url)
 end
