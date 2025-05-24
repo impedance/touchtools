@@ -49,5 +49,19 @@ module Parser
       end
       output.join("\n")
     end
+  def fetch_page_with_selenium(product_url)
+    require 'selenium-webdriver'
+
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('--headless=new') # Режим без GUI
+    options.add_argument('--disable-blink-features=AutomationControlled') # Скрыть автоматизацию
+
+    driver = Selenium::WebDriver.for :chrome, options: options
+    driver.get(product_url)
+    page_source = driver.page_source
+    driver.quit
+    page_source
+  end
+
   end
 end
