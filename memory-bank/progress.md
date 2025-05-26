@@ -23,3 +23,41 @@ The `MegamarketParser` is functional but unable to extract data due to bot detec
 
 *   Initially, the `MegamarketParser` was designed to directly extract data from Megamarket.
 *   Due to bot detection, the parser was modified to return empty strings as a temporary workaround.
+
+**Done:**
+- dixy
+- magnit
+
+**TODO:**
+- ozon
+- lenta
+- megamarket
+- vprok
+- perekrestok
+- utkonos
+- yandex market
+- wildberries
+- flamb
+- drom
+- chinamobil
+- komus
+- skidka-msk
+- metro
+- mvideo
+- eldorado
+- foodsprice
+- ratengoods
+- zoon
+- yell
+- rostov.flamp
+- yandex maps
+- banki
+- dreamjob
+- nerab
+- orabote
+- vseotzyvy.ru
+- otzovik
+- irecommend
+- 2gis
+- otzyvru
+- ru.OTZYV
